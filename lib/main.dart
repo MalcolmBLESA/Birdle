@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text('Birdle'),
            ),
           ),
@@ -120,17 +120,21 @@ class GuessInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.all(8.0),
           icon: const Icon(Icons.arrow_circle_up),
           onPressed: () {
             _onSummit();
           },
           ),
-        Expanded(
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 250, 
+          ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsetsGeometry.fromLTRB(5.0, 30.0, 5.0, 0.0),
             child: TextField(
               maxLength: 5,
               decoration: InputDecoration(
