@@ -14,14 +14,22 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 100,
-          title: Align(
+          toolbarHeight: 100.0,
+          centerTitle: true,
+          title: Container(
+            width: 210.0,
+            height: 50.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(35)),
+              border: Border.all(color: Color.fromARGB(255, 51, 142, 6),
+              width: 3)
+            ),
             alignment: Alignment.center,
             child: Text(
               'Birdle',
               style: TextStyle(
                 color: Color.fromARGB(255, 51, 142, 6),
-                fontSize: 50,
+                fontSize: 40,
               ),
             ),
           ),
@@ -141,9 +149,20 @@ class GuessInput extends StatelessWidget {
             padding: EdgeInsetsGeometry.fromLTRB(5.0, 30.0, 5.0, 0.0),
             child: TextField(
               maxLength: 5,
+              cursorColor: Color.fromARGB(255, 51, 142, 6),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(35)),
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(255, 51, 142, 6),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(35)),
+                  borderSide: BorderSide(
+                    color: Color.fromARGB(255, 51, 142, 6),
+                    width: 3.0,
+                  ),
                 ),
               ),
               controller: _textEditingController,
