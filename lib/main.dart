@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'game.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -9,25 +10,30 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          toolbarHeight: 100,
           title: Align(
             alignment: Alignment.center,
-            child: Text('Birdle'),
-           ),
+            child: Text(
+              'Birdle',
+              style: TextStyle(
+                color: Color.fromARGB(255, 51, 142, 6),
+                fontSize: 50,
+              ),
+            ),
           ),
-        body: Center(
-          child: GamePage(),
-          
-                  
-
+        ),
+        body: Padding(
+          padding: EdgeInsetsGeometry.all(8.0),
+          child: Center(child: GamePage()),
         ),
       ),
     );
   }
 }
-
 
 class Tile extends StatelessWidget {
   const Tile(this.letter, this.hitType, {super.key});
@@ -44,7 +50,7 @@ class Tile extends StatelessWidget {
       height: 60,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
-        color: switch(hitType){
+        color: switch (hitType) {
           HitType.hit => Colors.green,
           HitType.miss => Colors.red,
           HitType.partial => Colors.grey,
@@ -60,7 +66,6 @@ class Tile extends StatelessWidget {
     );
   }
 }
-
 
 class GamePage extends StatefulWidget {
   GamePage({super.key});
@@ -84,9 +89,12 @@ class _GamePageState extends State<GamePage> {
               children: [
                 for (var letter in guess)
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2.5, vertical: 2.5),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 2.5,
+                      vertical: 2.5,
+                    ),
                     child: Tile(letter.char, letter.type),
-                  )
+                  ),
               ],
             ),
           GuessInput(
@@ -102,7 +110,6 @@ class _GamePageState extends State<GamePage> {
   }
 }
 
-
 class GuessInput extends StatelessWidget {
   GuessInput({super.key, required this.onSubmitGuess});
 
@@ -110,12 +117,11 @@ class GuessInput extends StatelessWidget {
   final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  void _onSummit(){
+  void _onSummit() {
     onSubmitGuess(_textEditingController.text.trim());
-            _textEditingController.clear();
-            _focusNode.requestFocus();
+    _textEditingController.clear();
+    _focusNode.requestFocus();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -128,11 +134,9 @@ class GuessInput extends StatelessWidget {
           onPressed: () {
             _onSummit();
           },
-          ),
+        ),
         ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxWidth: 250, 
-          ),
+          constraints: const BoxConstraints(maxWidth: 250),
           child: Padding(
             padding: EdgeInsetsGeometry.fromLTRB(5.0, 30.0, 5.0, 0.0),
             child: TextField(
@@ -145,7 +149,7 @@ class GuessInput extends StatelessWidget {
               controller: _textEditingController,
               autofocus: true,
               focusNode: _focusNode,
-              onSubmitted: (input){
+              onSubmitted: (input) {
                 _onSummit();
               },
             ),
