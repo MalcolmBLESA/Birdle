@@ -8,6 +8,7 @@ library;
 
 import 'dart:collection';
 import 'dart:math';
+import 'data/dictionary.dart';
 
 /// The result of evaluating a [Letter] of a guess against the hidden word.
 enum HitType {
@@ -27,25 +28,6 @@ enum HitType {
 /// A single character paired with its [HitType] against the hidden word.
 typedef Letter = ({String char, HitType type});
 
-/// Every word that can be legally entered as a guess.
-const List<String> allLegalGuesses = [...legalWords, ...legalGuesses];
-
-/// Words that can be chosen as the hidden word.
-const List<String> legalWords = ['aback', 'abase', 'abate', 'abbey', 'abbot'];
-
-/// Additional words accepted as guesses beyond those in [legalWords].
-const List<String> legalGuesses = [
-  'aback',
-  'abase',
-  'abate',
-  'abbey',
-  'abbot',
-  'abhor',
-  'abide',
-  'abled',
-  'abode',
-  'abort',
-];
 
 /// Game state of a single round of Birdle,
 /// a five-letter word-guessing game similar to Wordle.
@@ -138,11 +120,6 @@ class Game {
     return result;
   }
 
-  /// Whether [guess] is a legal word to guess.
-  ///
-  /// UIs can call this method before [guess] to
-  /// show players a message when they enter an invalid word.
-  bool isLegalGuess(String guess) => Word.fromString(guess).isLegalGuess;
 
   /// Evaluates [guess] against the hidden word without advancing the game.
   Word matchGuessOnly(String guess) =>
@@ -199,13 +176,13 @@ class Word with IterableMixin<Letter> {
   /// Creates a word chosen at random from [legalWords].
   factory Word.random() {
     final random = Random();
-    final nextWord = legalWords[random.nextInt(legalWords.length)];
+    final nextWord = legalWords.toList()[random.nextInt(legalWords.length)];
     return Word.fromString(nextWord);
   }
 
   /// Creates a word chosen from [legalWords] using [seed] as an index.
   factory Word.fromSeed(int seed) =>
-      Word.fromString(legalWords[seed % legalWords.length]);
+      Word.fromString(legalWords.toList()[seed % legalWords.length]);
 
   /// An unmodifiable list of [Letter]s that make up this word.
   final List<Letter> _letters;
@@ -236,16 +213,13 @@ class Word with IterableMixin<Letter> {
 
 /// Validation and guess-evaluation logic on [Word].
 extension WordUtils on Word {
-  /// Whether this word appears in [allLegalGuesses].
-  bool get isLegalGuess => allLegalGuesses.contains(toString());
+
 
   /// Compares this [Word] against the specified [hiddenWord]
   /// and returns a new [Word] with the same letters,
   /// but where each [Letter] has new a [HitType] of
   /// [HitType.hit], [HitType.partial], or [HitType.miss].
   Word evaluateGuess(Word hiddenWord) {
-    assert(isLegalGuess);
-
     final result = List<Letter>.filled(length, (char: '', type: HitType.none));
     // Counts hidden-word letters that can still be claimed as partial matches.
     final unmatchedHiddenLetterCounts = <String, int>{};
