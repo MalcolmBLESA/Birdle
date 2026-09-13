@@ -66,4 +66,22 @@ class GameViewModel {
 
   static Word _generateInitialWord(int? seed) =>
       seed == null ? Word.random() : Word.fromSeed(seed);
+
+  HitType getLetterStatus(String letter) {
+    HitType status = HitType.none;
+    for (var guess in _guesses) {
+      for (var l in guess) {
+        if (l.char.toUpperCase() == letter.toUpperCase()) {
+          if (l.type == HitType.hit) return HitType.hit;
+          if (l.type == HitType.partial && status != HitType.hit) {
+            status = HitType.partial;
+          } 
+          else if (l.type == HitType.miss && status == HitType.none) {
+            status = HitType.miss;
+          }
+        }
+      }
+    }
+    return status;
+  }
 }

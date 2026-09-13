@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../viewmodels/game_viewmodel.dart';
 import '../widgets/tile.dart';
 import '../widgets/guess_input.dart';
+import '../widgets/keyboard_indicator.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -40,8 +41,11 @@ class _GamePageState extends State<GamePage> {
               });
             },
           ),
+          KeyboardIndicator( getLetterStatus: _game.getLetterStatus, ),
         ],
+        
       ),
     );
   }
+ 
 }
